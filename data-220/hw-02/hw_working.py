@@ -9,6 +9,18 @@ from scipy.special import comb
 val = [82, 88, 76, 88, 92, 78, 89, 91, 85, 87,
        94, 75, 81, 90, 83, 86, 88, 92, 79, 84]
 
+mean = np.mean(val)
+
+summation = sum(val)
+
+l = len(val)
+
+mean_len = l*mean
+
+var = summation
+
+print(mean_len, summation, mean)
+
 df = pd.DataFrame([82, 88, 76, 88, 92, 78, 89, 91, 85, 87,
                    94, 75, 81, 90, 83, 86, 88, 92, 79, 84])
 
@@ -22,15 +34,17 @@ print(df.describe())
 
 # # print(stats.mode(val))
 
-# print("Standard Deviation", np.std(val))
+print("Standard Deviation", np.std(val))
 
-# print("Variance", statistics.variance(val))
+print("Variance", statistics.variance(val))
 
-# q3, q1 = np.percentile(val, [75, 25])
+q3, q1 = np.percentile(val, [75, 25])
 
-# print("IQR", q3 - q1)
+print("IQR", q3 - q1)
 
-# print("scipy IQR", stats.iqr(val))
+print("scipy IQR", stats.iqr(val))
+
+print("std", stats.tstd(val))
 
 # print("Range", max(val) - min(val))
 
