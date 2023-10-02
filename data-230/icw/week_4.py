@@ -25,4 +25,4 @@ values = [85, 92, 78, 88, 95]
 
 plt.figure(figsize=(6, 2))
 sns.barplot(x=categories, y=values)
-plt.show
+plt.show()
