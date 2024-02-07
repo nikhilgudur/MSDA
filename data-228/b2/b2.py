@@ -9,7 +9,7 @@ def main():
 
     if not df.isEmpty():
         df = count_severity(df)
-        print(df.collect())
+        print(tuple(df.collect()))
     else:
         print("File is empty")
 
