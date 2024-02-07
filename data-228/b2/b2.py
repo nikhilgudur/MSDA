@@ -10,6 +10,8 @@ def main():
     if not df.isEmpty():
         df = count_severity(df)
         print(df.collect())
+    else:
+        print("File is empty")
 
 
 def read_file(path: str) -> RDD:
