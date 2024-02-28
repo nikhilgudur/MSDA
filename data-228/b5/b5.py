@@ -36,33 +36,14 @@ def read_file(file_path: str):
 
 def get_missing_values(df):
     """Find the missing values in the dataframe"""
+
     df.select([count(when(isnan(c) | col(c).isNull(), c)).alias(c) for c in df.columns]
               ).show()
 
 
-# Not using this function
-def get_unique_classes(df):
-    """Find the unique classes in the dataframe"""
-    return df.select("Class").distinct().rdd.flatMap(lambda x: x).collect()
-
-# Not using this function
-
-
-def get_unique_class_dfs(df):
-    """Find the unique classes in the dataframe"""
-
-    unique_classes = get_unique_classes(df)
-
-    unique_class_dfs = {}
-
-    for cls in unique_classes:
-        unique_class_dfs[cls] = df.filter(df["Class"] == cls)
-
-    return unique_class_dfs
-
-
 def get_correlation(df):
     """Find the correlation between the columns in the dataframe"""
+
     for col1 in df.columns:
         for col2 in df.columns:
             if col1 is not col2:
@@ -71,6 +52,7 @@ def get_correlation(df):
 
 
 def find_duplicates(df):
+    """Find the duplicate rows in the dataframe and remove them"""
 
     df_combined = df.withColumn("Set1", concat(df["Suit1"], df["Rank1"])) \
         .withColumn("Set2", concat(df["Suit2"], df["Rank2"])) \
@@ -102,20 +84,20 @@ def find_duplicates(df):
 
     return df_unique
 
-    # df_combined.show()
-
 
 def main():
     df = read_file(POKER_HANDS)
+
+    # To find the missing values
+    get_missing_values(df)
 
     df.describe().show()
 
     # To drop missing values
     df = df.na.drop()
 
+    # To find the missing values
     get_missing_values(df)
-
-    # df.collect()
 
     # To find the correlation between the columns
     get_correlation(df)
