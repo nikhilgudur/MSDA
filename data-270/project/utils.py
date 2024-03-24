@@ -1,35 +1,26 @@
-import matplotlib.pyplot as plt
-from sklearn.datasets import load_iris
-from sklearn.inspection import DecisionBoundaryDisplay
-from sklearn.linear_model import LogisticRegression
+from cryptocmd import CmcScraper
 
 
-iris = load_iris()
+def get_coin_data(coin_code, coin_name):
+    scraper = CmcScraper(coin_code=coin_code, coin_name=coin_name)
 
-X = iris.data[:, :2]
-Y = iris.target
+    # headers, data = scraper.get_data()
 
-logreg = LogisticRegression(C=1e5)
-logreg.fit(X, Y)
+    # coin_json_data = scraper.get_data("json")
 
-_, ax = plt.subplots(figsize=(4, 3))
-DecisionBoundaryDisplay.from_estimator(
-    logreg,
-    X,
-    cmap=plt.cm.Paired,
-    ax=ax,
-    response_method="predict",
-    plot_method="pcolormesh",
-    shading="auto",
-    xlabel="Sepal length",
-    ylabel="Sepal width",
-    eps=0.5,
-)
+    scraper.export("csv", name=f"./coin_datasets/{coin_code}_all_time")
 
-plt.scatter(X[:, 0], X[:, 1], c=Y, edgecolors="k", cmap=plt.cm.Paired)
+    df = scraper.get_dataframe()
+
+    return df
 
 
-plt.xticks(())
-plt.yticks(())
+get_coin_data("btc", "bitcoin")
 
-plt.show()
+get_coin_data("eth", "ethereum")
+
+get_coin_data("aave", "aave")
+
+get_coin_data("doge", "dogecoin")
+
+get_coin_data("xrp", "ripple")
