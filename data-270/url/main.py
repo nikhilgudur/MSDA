@@ -1,11 +1,26 @@
 from cryptocmd import CmcScraper
 
-scraper = CmcScraper(coin_code="btc", coin_name="bitcoin")
 
-headers, data = scraper.get_data()
+def get_coin_data(coin_code, coin_name):
+    scraper = CmcScraper(coin_code=coin_code, coin_name=coin_name)
 
-bitcoin_json_data = scraper.get_data("json")
+    # headers, data = scraper.get_data()
 
-scraper.export("csv", name="bitcoin_all_time")
+    # coin_json_data = scraper.get_data("json")
 
-df = scraper.get_dataframe()
+    scraper.export("csv", name=f"{coin_code}_all_time")
+
+    df = scraper.get_dataframe()
+
+    return df
+
+
+get_coin_data("btc", "bitcoin")
+
+get_coin_data("eth", "ethereum")
+
+get_coin_data("aave", "aave")
+
+get_coin_data("doge", "dogecoin")
+
+get_coin_data("xrp", "ripple")
