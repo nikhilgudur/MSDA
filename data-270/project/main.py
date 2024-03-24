@@ -1,10 +1,14 @@
-from utils import get_coin_data
+from utils import get_coin_data_csv, get_coin_data_df
 
 if __name__ == "__main__":
-    get_coin_data("btc", "bitcoin")
+    # Fetch data for the following coins and save them as CSV files
+    get_coin_data_csv("btc", "bitcoin")
+    get_coin_data_csv("eth", "ethereum")
+    get_coin_data_csv("aave", "aave")
+    get_coin_data_csv("doge", "dogecoin")
 
-    get_coin_data("eth", "ethereum")
+    btc_df = get_coin_data_df("btc", "bitcoin")
 
-    get_coin_data("aave", "aave")
+    # print(btc_df.info())
 
-    get_coin_data("doge", "dogecoin")
+    # print(btc_df.isna().sum())
