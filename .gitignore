@@ -1,6 +1,11 @@
 .DS_Store
 
-
+# Ignore all ML model directories
 model
 
+# Ignore all pdfs in the data-245 directory
 data-245/pdfs
+
+# Ignore all python virtual environments
+# data-270/project/.env
+.env
