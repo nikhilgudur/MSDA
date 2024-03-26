@@ -1,0 +1,7 @@
+{
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "cmake.configureOnOpen": true,
+  "cSpell.words": ["pyspark"]
+}
