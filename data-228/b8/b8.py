@@ -28,8 +28,12 @@ def create_graph(df):
 
     peopleVertices = person1.union(person2).distinct().toDF(["id"])
 
-    edges = df.map(lambda x: (x[0], x[2], x[4], x[6])).toDF(
+    edges_forward = df.map(lambda x: (x[0], x[2], x[4], x[6])).toDF(
         ["src", "dst", "relationship", "year"])
+    edges_reverse = df.map(lambda x: (x[2], x[0], x[4], x[6])).toDF(
+        ["src", "dst", "relationship", "year"])
+
+    edges = edges_forward.unionAll(edges_reverse)
 
     graph = GraphFrame(peopleVertices, edges)
 
@@ -37,9 +41,9 @@ def create_graph(df):
 
 
 def find_friends_of_friends(person, graph):
-
-    friends_of_friends = graph.find("(a)-[e1]->(b); (b)-[e2]->(c)").filter(
-        F.col("a.id") == person).select("c.id", "e2.year").distinct()
+    friends_of_friends = graph.find("(a)-[e1]->(b); (b)-[e2]->(c)").filter(F.col("a.id") == person) \
+        .select("c.id", "e2.year").distinct() \
+        .where(F.col("c.id") != person)
 
     return friends_of_friends.orderBy(F.asc("year"))
 
@@ -51,7 +55,6 @@ def main():
     graph = create_graph(df)
 
     for person in graph.vertices.rdd.map(lambda row: row.id).collect():
-        print(person)
         new_friends = find_friends_of_friends(person, graph)
         if not new_friends.rdd.isEmpty():
             print(f"Introducing new friends to {person}:")
