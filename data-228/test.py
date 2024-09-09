@@ -1,44 +1,18 @@
-dict1 = {
-    1: {
-        9: 1
-    },
-    2: {
-        8: 1
-    },
-    3: {
-        7: 1
-    },
-    4: {
-        6: 1
-    },
-}
+from pyspark.sql import SparkSession
 
-dict2 = {
-    1: {
-        9: 1
-    },
-    2: {
-        8: 1
-    },
-    3: {
-        7: 1
-    },
-    4: {
-        6: 2
-    },
-}
+from pyspark.sql.functions import *
+from pyspark.sql.types import *
+# Streaming via socket
+spark = SparkSession.builder.appName("streamCsv").getOrCreate()
+# sc = SparkContext().getOrCreate()
 
 
-# if dict1 == dict2:
-#     print("True")
-# else:
-#     print("False")
-
-
-arr1 = [1, 10, 1, 11, 1, 13, 1, 12, 1, 1, 9]
-arr2 = [1, 10, 1, 11, 1, 13, 1, 12, 1, 1, 9]
-
-if arr1 == arr2:
-    print("True")
-else:
-    print("False")
+rawdata = spark.readStream.format("socket").option(
+    "host", "localhost").option("port", 9999).option(
+    "includeTimestamp", True).load()
+# rawdata = spark.read.csv("./test.txt", header=True, inferSchema=True)
+query = rawdata.select((rawdata.value).alias("product"), (rawdata.timestamp).alias(
+    "time")).groupBy(window("time", "1minutes"), "product").count().sort(desc("window"))
+result = query.writeStream.format("console").outputMode(
+    "complete").start().awaitTermination()
+result.stop()
