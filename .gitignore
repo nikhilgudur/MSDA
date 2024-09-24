@@ -9,3 +9,6 @@ data-245/pdfs
 # Ignore all python virtual environments
 # data-270/project/.env
 .env
+
+# Ignore all jpg files in the MSDA directory
+*.jpg
