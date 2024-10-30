@@ -3,6 +3,9 @@
 # Ignore all ML model directories
 model
 
+# Ignore all Data model directories
+data
+
 # Ignore all pdfs in the data-245 directory
 data-245/pdfs
 
@@ -10,5 +13,8 @@ data-245/pdfs
 # data-270/project/.env
 .env
 
-# Ignore all jpg files in the MSDA directory
+# Ignore all Images and videos in the MSDA directory
 *.jpg
+*.png
+*.mp4
+*.csv
